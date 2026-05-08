@@ -1,10 +1,5 @@
 """
 Patched prompt analysis for the ablation study.
-
-This version imports the patched augmentation pipeline so the generated
-artifacts reflect the actual prompts used by experiment_runner_patched.py.
-It also records that C5 token-efficiency in the patched runner includes
-repair-round tokens beyond the initial prompt measured here.
 """
 
 from __future__ import annotations
