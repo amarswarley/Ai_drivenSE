@@ -1,9 +1,5 @@
 """
-Patched augmentation pipeline copy.
-
-This wrapper keeps the original file untouched while fixing:
-1. RAG retrieval leakage of the target problem.
-2. RAG prompt confounding by removing extra CoT instructions.
+augmentation pipeline 
 """
 
 import random
@@ -15,7 +11,7 @@ logger = base_pipeline.logger
 
 
 class AugmentationPipeline(base_pipeline.AugmentationPipeline):
-    """Patched prompt builder for cleaner ablation behavior."""
+    
 
     def _rag_context(
         self,
