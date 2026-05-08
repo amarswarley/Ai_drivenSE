@@ -1,8 +1,5 @@
 """
 Problem complexity analysis for the 20-problem BioCoder subset.
-
-This keeps the original difficulty heuristics but softens the discussion text
-so it does not presuppose that augmentation must help on harder problems.
 """
 
 from __future__ import annotations
