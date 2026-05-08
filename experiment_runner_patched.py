@@ -1,11 +1,5 @@
 """
-Patched experiment runner copy.
-
-This wrapper keeps the original runner untouched while fixing:
-1. Fragile code extraction for CoT/RAG/repair outputs.
-2. C5 repair token accounting.
-3. Reporting of initial vs final repair success.
-4. Use of the patched augmentation pipeline copy.
+experiment runner 
 """
 
 import argparse
