@@ -1,0 +1,498 @@
+[
+  {
+    "id": "bc_001",
+    "category": "sequence_analysis",
+    "signature": "def gc_content(sequence: str) -> float:",
+    "docstring": "Calculate the GC content of a DNA sequence as a fraction between 0.0 and 1.0. Return 0.0 for empty sequences.",
+    "code": "def gc_content(sequence: str) -> float:\n    if not sequence: return 0.0\n    s = sequence.upper()\n    return (s.count('G') + s.count('C')) / len(s)",
+    "tests": [
+      {
+        "call": "gc_content('ACGT')",
+        "expected": 0.5
+      },
+      {
+        "call": "gc_content('GGCC')",
+        "expected": 1.0
+      },
+      {
+        "call": "gc_content('ATAT')",
+        "expected": 0.0
+      },
+      {
+        "call": "gc_content('')",
+        "expected": 0.0
+      }
+    ]
+  },
+  {
+    "id": "bc_002",
+    "category": "sequence_analysis",
+    "signature": "def reverse_complement(dna: str) -> str:",
+    "docstring": "Return the reverse complement of a DNA sequence. Use N for unrecognised bases.",
+    "code": "def reverse_complement(dna: str) -> str:\n    comp = {'A':'T','T':'A','C':'G','G':'C'}\n    return ''.join(comp.get(b.upper(),'N') for b in reversed(dna))",
+    "tests": [
+      {
+        "call": "reverse_complement('ATCG')",
+        "expected": "CGAT"
+      },
+      {
+        "call": "reverse_complement('AAAACCCGGT')",
+        "expected": "ACCGGGTTTT"
+      },
+      {
+        "call": "reverse_complement('')",
+        "expected": ""
+      },
+      {
+        "call": "reverse_complement('A')",
+        "expected": "T"
+      }
+    ]
+  },
+  {
+    "id": "bc_003",
+    "category": "sequence_analysis",
+    "signature": "def transcribe(dna: str) -> str:",
+    "docstring": "Transcribe a DNA sequence to RNA by replacing all T with U (case-insensitive). Return uppercase RNA.",
+    "code": "def transcribe(dna: str) -> str:\n    return dna.upper().replace('T', 'U')",
+    "tests": [
+      {
+        "call": "transcribe('ACGT')",
+        "expected": "ACGU"
+      },
+      {
+        "call": "transcribe('TTTT')",
+        "expected": "UUUU"
+      },
+      {
+        "call": "transcribe('acgt')",
+        "expected": "ACGU"
+      },
+      {
+        "call": "transcribe('')",
+        "expected": ""
+      }
+    ]
+  },
+  {
+    "id": "bc_004",
+    "category": "sequence_analysis",
+    "signature": "def count_nucleotides(sequence: str) -> dict:",
+    "docstring": "Count the occurrences of each nucleotide (A, T, C, G) in a DNA sequence. Return a dict with keys A, T, C, G.",
+    "code": "def count_nucleotides(sequence: str) -> dict:\n    s = sequence.upper()\n    return {'A': s.count('A'), 'T': s.count('T'), 'C': s.count('C'), 'G': s.count('G')}",
+    "tests": [
+      {
+        "call": "count_nucleotides('ACGT')",
+        "expected": {
+          "A": 1,
+          "T": 1,
+          "C": 1,
+          "G": 1
+        }
+      },
+      {
+        "call": "count_nucleotides('AAAA')",
+        "expected": {
+          "A": 4,
+          "T": 0,
+          "C": 0,
+          "G": 0
+        }
+      },
+      {
+        "call": "count_nucleotides('')",
+        "expected": {
+          "A": 0,
+          "T": 0,
+          "C": 0,
+          "G": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "bc_005",
+    "category": "sequence_analysis",
+    "signature": "def is_valid_dna(sequence: str) -> bool:",
+    "docstring": "Return True if the sequence contains only valid DNA bases (A, T, C, G), case-insensitive. Return False for empty strings.",
+    "code": "def is_valid_dna(sequence: str) -> bool:\n    if not sequence: return False\n    return all(b.upper() in 'ATCG' for b in sequence)",
+    "tests": [
+      {
+        "call": "is_valid_dna('ACGT')",
+        "expected": true
+      },
+      {
+        "call": "is_valid_dna('ACGX')",
+        "expected": false
+      },
+      {
+        "call": "is_valid_dna('')",
+        "expected": false
+      },
+      {
+        "call": "is_valid_dna('acgt')",
+        "expected": true
+      }
+    ]
+  },
+  {
+    "id": "bc_021",
+    "category": "protein_analysis",
+    "signature": "def translate_codon(codon: str) -> str:",
+    "docstring": "Translate a single RNA codon to its amino acid using the standard genetic code. Return '*' for stop codons and 'X' for unknown.",
+    "code": "def translate_codon(codon: str) -> str:\n    table = {'UUU':'F','UUC':'F','UUA':'L','UUG':'L','CUU':'L','CUC':'L','CUA':'L','CUG':'L','AUU':'I','AUC':'I','AUA':'I','AUG':'M','GUU':'V','GUC':'V','GUA':'V','GUG':'V','UCU':'S','UCC':'S','UCA':'S','UCG':'S','CCU':'P','CCC':'P','CCA':'P','CCG':'P','ACU':'T','ACC':'T','ACA':'T','ACG':'T','GCU':'A','GCC':'A','GCA':'A','GCG':'A','UAU':'Y','UAC':'Y','UAA':'*','UAG':'*','CAU':'H','CAC':'H','CAA':'Q','CAG':'Q','AAU':'N','AAC':'N','AAA':'K','AAG':'K','GAU':'D','GAC':'D','GAA':'E','GAG':'E','UGU':'C','UGC':'C','UGA':'*','UGG':'W','CGU':'R','CGC':'R','CGA':'R','CGG':'R','AGU':'S','AGC':'S','AGA':'R','AGG':'R','GGU':'G','GGC':'G','GGA':'G','GGG':'G'}\n    return table.get(codon.upper(), 'X')",
+    "tests": [
+      {
+        "call": "translate_codon('AUG')",
+        "expected": "M"
+      },
+      {
+        "call": "translate_codon('UAA')",
+        "expected": "*"
+      },
+      {
+        "call": "translate_codon('UUU')",
+        "expected": "F"
+      },
+      {
+        "call": "translate_codon('GGG')",
+        "expected": "G"
+      }
+    ]
+  },
+  {
+    "id": "bc_022",
+    "category": "protein_analysis",
+    "signature": "def count_amino_acids(protein: str) -> dict:",
+    "docstring": "Count occurrences of each amino acid in a protein sequence string. Return a dict mapping each letter to its count.",
+    "code": "def count_amino_acids(protein: str) -> dict:\n    counts = {}\n    for aa in protein.upper():\n        counts[aa] = counts.get(aa, 0) + 1\n    return counts",
+    "tests": [
+      {
+        "call": "count_amino_acids('ACDE')",
+        "expected": {
+          "A": 1,
+          "C": 1,
+          "D": 1,
+          "E": 1
+        }
+      },
+      {
+        "call": "count_amino_acids('AAA')",
+        "expected": {
+          "A": 3
+        }
+      },
+      {
+        "call": "count_amino_acids('')",
+        "expected": {}
+      }
+    ]
+  },
+  {
+    "id": "bc_023",
+    "category": "protein_analysis",
+    "signature": "def monoisotopic_mass(protein: str) -> float:",
+    "docstring": "Calculate the monoisotopic mass of a protein string. Return 0.0 for empty input.",
+    "code": "def monoisotopic_mass(protein: str) -> float:\n    masses = {'A':71.03711,'C':103.00919,'D':115.02694,'E':129.04259,'F':147.06841,'G':57.02146,'H':137.05891,'I':113.08406,'K':128.09496,'L':113.08406,'M':131.04049,'N':114.04293,'P':97.05276,'Q':128.05858,'R':156.10111,'S':87.03203,'T':101.04768,'V':99.06841,'W':186.07931,'Y':163.06333}\n    return round(sum(masses.get(aa, 0) for aa in protein.upper()), 3)",
+    "tests": [
+      {
+        "call": "monoisotopic_mass('SKADYEK')",
+        "expected": 821.392
+      },
+      {
+        "call": "monoisotopic_mass('A')",
+        "expected": 71.037
+      },
+      {
+        "call": "monoisotopic_mass('')",
+        "expected": 0.0
+      }
+    ]
+  },
+  {
+    "id": "bc_024",
+    "category": "protein_analysis",
+    "signature": "def is_start_codon(codon: str) -> bool:",
+    "docstring": "Return True if the codon is a start codon (AUG for RNA or ATG for DNA).",
+    "code": "def is_start_codon(codon: str) -> bool:\n    return codon.upper() in ('AUG', 'ATG')",
+    "tests": [
+      {
+        "call": "is_start_codon('AUG')",
+        "expected": true
+      },
+      {
+        "call": "is_start_codon('ATG')",
+        "expected": true
+      },
+      {
+        "call": "is_start_codon('GCU')",
+        "expected": false
+      },
+      {
+        "call": "is_start_codon('aug')",
+        "expected": true
+      }
+    ]
+  },
+  {
+    "id": "bc_025",
+    "category": "protein_analysis",
+    "signature": "def is_stop_codon(codon: str) -> bool:",
+    "docstring": "Return True if the RNA codon is a stop codon (UAA, UAG, or UGA).",
+    "code": "def is_stop_codon(codon: str) -> bool:\n    return codon.upper() in ('UAA', 'UAG', 'UGA')",
+    "tests": [
+      {
+        "call": "is_stop_codon('UAA')",
+        "expected": true
+      },
+      {
+        "call": "is_stop_codon('UAG')",
+        "expected": true
+      },
+      {
+        "call": "is_stop_codon('UGA')",
+        "expected": true
+      },
+      {
+        "call": "is_stop_codon('AUG')",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "id": "bc_041",
+    "category": "sequence_utils",
+    "signature": "def parse_fasta_string(fasta: str) -> dict:",
+    "docstring": "Parse a FASTA-format string and return a dict mapping each sequence ID (without '>') to its sequence.",
+    "code": "def parse_fasta_string(fasta: str) -> dict:\n    result = {}\n    current_id = None\n    for line in fasta.strip().splitlines():\n        line = line.strip()\n        if line.startswith('>'):\n            current_id = line[1:].split()[0]\n            result[current_id] = ''\n        elif current_id:\n            result[current_id] += line\n    return result",
+    "tests": [
+      {
+        "call": "parse_fasta_string('>seq1\\nACGT\\n>seq2\\nTGCA')",
+        "expected": {
+          "seq1": "ACGT",
+          "seq2": "TGCA"
+        }
+      },
+      {
+        "call": "parse_fasta_string('>s1\\nAA\\nCC')",
+        "expected": {
+          "s1": "AACC"
+        }
+      },
+      {
+        "call": "parse_fasta_string('')",
+        "expected": {}
+      }
+    ]
+  },
+  {
+    "id": "bc_042",
+    "category": "sequence_utils",
+    "signature": "def sliding_window(sequence: str, window: int, step: int) -> list:",
+    "docstring": "Return a list of all substrings obtained by a sliding window of given size and step over the sequence.",
+    "code": "def sliding_window(sequence: str, window: int, step: int) -> list:\n    return [sequence[i:i+window] for i in range(0, len(sequence)-window+1, step)]",
+    "tests": [
+      {
+        "call": "sliding_window('ACGTACGT', 3, 1)",
+        "expected": [
+          "ACG",
+          "CGT",
+          "GTA",
+          "TAC",
+          "ACG",
+          "CGT"
+        ]
+      },
+      {
+        "call": "sliding_window('ACGT', 4, 1)",
+        "expected": [
+          "ACGT"
+        ]
+      },
+      {
+        "call": "sliding_window('AC', 3, 1)",
+        "expected": []
+      }
+    ]
+  },
+  {
+    "id": "bc_043",
+    "category": "sequence_utils",
+    "signature": "def longest_common_substring(s1: str, s2: str) -> str:",
+    "docstring": "Return the longest common substring between two strings. If there are ties, return the first one found.",
+    "code": "def longest_common_substring(s1: str, s2: str) -> str:\n    best = ''\n    for i in range(len(s1)):\n        for j in range(len(s1)-i+1):\n            sub = s1[i:i+j]\n            if sub in s2 and len(sub) > len(best):\n                best = sub\n    return best",
+    "tests": [
+      {
+        "call": "longest_common_substring('ACGTAC', 'GTATAC')",
+        "expected": "GTA"
+      },
+      {
+        "call": "longest_common_substring('AAAA', 'BBBB')",
+        "expected": ""
+      },
+      {
+        "call": "longest_common_substring('ACGT', 'ACGT')",
+        "expected": "ACGT"
+      }
+    ]
+  },
+  {
+    "id": "bc_044",
+    "category": "sequence_utils",
+    "signature": "def count_mismatches(seq1: str, seq2: str) -> int:",
+    "docstring": "Count the number of positions where two equal-length sequences differ.",
+    "code": "def count_mismatches(seq1: str, seq2: str) -> int:\n    return sum(a != b for a, b in zip(seq1, seq2))",
+    "tests": [
+      {
+        "call": "count_mismatches('ACGT', 'ACGG')",
+        "expected": 1
+      },
+      {
+        "call": "count_mismatches('AAAA', 'TTTT')",
+        "expected": 4
+      },
+      {
+        "call": "count_mismatches('ACGT', 'ACGT')",
+        "expected": 0
+      }
+    ]
+  },
+  {
+    "id": "bc_045",
+    "category": "sequence_utils",
+    "signature": "def remove_gaps(sequence: str) -> str:",
+    "docstring": "Remove all gap characters (- and .) from an aligned sequence string.",
+    "code": "def remove_gaps(sequence: str) -> str:\n    return sequence.replace('-', '').replace('.', '')",
+    "tests": [
+      {
+        "call": "remove_gaps('A-C-G-T')",
+        "expected": "ACGT"
+      },
+      {
+        "call": "remove_gaps('A.C.G.T')",
+        "expected": "ACGT"
+      },
+      {
+        "call": "remove_gaps('ACGT')",
+        "expected": "ACGT"
+      }
+    ]
+  },
+  {
+    "id": "bc_061",
+    "category": "statistics",
+    "signature": "def mean(values: list) -> float:",
+    "docstring": "Return the arithmetic mean of a list of numbers. Return 0.0 for an empty list.",
+    "code": "def mean(values: list) -> float:\n    if not values: return 0.0\n    return sum(values) / len(values)",
+    "tests": [
+      {
+        "call": "mean([1, 2, 3, 4, 5])",
+        "expected": 3.0
+      },
+      {
+        "call": "mean([0.5, 1.5])",
+        "expected": 1.0
+      },
+      {
+        "call": "mean([])",
+        "expected": 0.0
+      }
+    ]
+  },
+  {
+    "id": "bc_062",
+    "category": "statistics",
+    "signature": "def variance(values: list) -> float:",
+    "docstring": "Return the population variance of a list of numbers. Return 0.0 for lists with fewer than 2 elements.",
+    "code": "def variance(values: list) -> float:\n    if len(values) < 2: return 0.0\n    m = sum(values) / len(values)\n    return sum((x - m) ** 2 for x in values) / len(values)",
+    "tests": [
+      {
+        "call": "variance([2, 4, 4, 4, 5, 5, 7, 9])",
+        "expected": 4.0
+      },
+      {
+        "call": "variance([1])",
+        "expected": 0.0
+      },
+      {
+        "call": "variance([])",
+        "expected": 0.0
+      }
+    ]
+  },
+  {
+    "id": "bc_063",
+    "category": "statistics",
+    "signature": "def normalize_scores(scores: list) -> list:",
+    "docstring": "Normalize a list of scores to [0, 1] using min-max scaling. Return the original list if all values are equal.",
+    "code": "def normalize_scores(scores: list) -> list:\n    if not scores: return []\n    mn, mx = min(scores), max(scores)\n    if mx == mn: return scores[:]\n    return [round((x - mn) / (mx - mn), 10) for x in scores]",
+    "tests": [
+      {
+        "call": "normalize_scores([0, 5, 10])",
+        "expected": [
+          0.0,
+          0.5,
+          1.0
+        ]
+      },
+      {
+        "call": "normalize_scores([3, 3, 3])",
+        "expected": [
+          3,
+          3,
+          3
+        ]
+      },
+      {
+        "call": "normalize_scores([])",
+        "expected": []
+      }
+    ]
+  },
+  {
+    "id": "bc_064",
+    "category": "statistics",
+    "signature": "def edit_distance(s1: str, s2: str) -> int:",
+    "docstring": "Compute the Levenshtein edit distance between two strings using dynamic programming.",
+    "code": "def edit_distance(s1: str, s2: str) -> int:\n    m, n = len(s1), len(s2)\n    dp = list(range(n + 1))\n    for i in range(1, m + 1):\n        prev = dp[:]\n        dp[0] = i\n        for j in range(1, n + 1):\n            if s1[i-1] == s2[j-1]:\n                dp[j] = prev[j-1]\n            else:\n                dp[j] = 1 + min(prev[j], dp[j-1], prev[j-1])\n    return dp[n]",
+    "tests": [
+      {
+        "call": "edit_distance('ACGT', 'ACGT')",
+        "expected": 0
+      },
+      {
+        "call": "edit_distance('ACGT', 'ACG')",
+        "expected": 1
+      },
+      {
+        "call": "edit_distance('ACGT', 'TGCA')",
+        "expected": 4
+      },
+      {
+        "call": "edit_distance('', 'ACG')",
+        "expected": 3
+      }
+    ]
+  },
+  {
+    "id": "bc_065",
+    "category": "statistics",
+    "signature": "def alignment_score(seq1: str, seq2: str, match: int, mismatch: int) -> int:",
+    "docstring": "Calculate a simple alignment score between two equal-length sequences using match/mismatch penalties.",
+    "code": "def alignment_score(seq1: str, seq2: str, match: int, mismatch: int) -> int:\n    return sum(match if a == b else mismatch for a, b in zip(seq1, seq2))",
+    "tests": [
+      {
+        "call": "alignment_score('ACGT', 'ACGT', 1, -1)",
+        "expected": 4
+      },
+      {
+        "call": "alignment_score('ACGT', 'TTTT', 1, -1)",
+        "expected": -2
+      },
+      {
+        "call": "alignment_score('ACGT', 'ACGG', 2, -1)",
+        "expected": 5
+      }
+    ]
+  }
+]
